@@ -65,7 +65,7 @@ struct IntroView: View {
             }
         }
         .fullScreenCover(isPresented: $isPresented, content: {
-           // MainView()
+            HomeView()
         })
         .background {
             Image(.backIntro)

@@ -23,7 +23,7 @@ struct LoadingView: View {
             if vm.isFirstLaunch ?? true {
                 IntroView()
             }else{
-               // MainView()
+                HomeView()
             }
         })
         .onAppear(perform: {
