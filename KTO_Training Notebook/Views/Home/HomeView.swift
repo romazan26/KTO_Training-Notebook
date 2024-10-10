@@ -71,9 +71,24 @@ struct HomeView: View {
                         Text("Training")
                             .font(.system(size: 28, weight: .heavy))
                         Spacer()
-                        Text("Add")
-                            .padding(8)
-                            .background(Color.brownApp.cornerRadius(12))
+                        if vm.trainings.isEmpty{
+                            NavigationLink {
+                                AddTrainingView(vm: vm)
+                            } label: {
+                                Text("Add")
+                                    .padding(8)
+                                    .background(Color.brownApp.cornerRadius(12))
+                            }
+                        }else{
+                            NavigationLink {
+                                TrainingsView(vm: vm)
+                            } label: {
+                                Text("See all")
+                                    .padding(8)
+                                    .background(Color.brownApp.cornerRadius(12))
+                            }
+                        }
+                       
                     }
                     ScrollView {
                         EmptryEntryView()

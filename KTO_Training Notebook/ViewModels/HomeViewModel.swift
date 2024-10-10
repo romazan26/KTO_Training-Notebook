@@ -12,6 +12,7 @@ import PhotosUI
 final class HomeViewModel: ObservableObject {
     let manager = CoreDataManager.instance
     
+    //MARK: - Exercises propertyes
     @Published var exercises: [Exercises] = []
     @Published var simpleExercise: Exercises?
     @Published var categories: [Category] = []
@@ -34,9 +35,18 @@ final class HomeViewModel: ObservableObject {
         return config
     }
     
+    //MARK: - Training Propertes
+    @Published var trainings: [Training] = []
+    @Published var simpleTraining: Training?
+    @Published var simpleTrainingTitle: String = ""
+    @Published var simpleTrainingDescript: String = ""
+    @Published var arrayExercises: [Exercises] = []
+    @Published var isPresentAddExercises = false
+    
     init(){
         getcategory()
         getExercises()
+        gettraining()
     }
     
     //MARK: - Edit data
@@ -53,7 +63,7 @@ final class HomeViewModel: ObservableObject {
                     manager.context.delete(category)
                 }
             }
-           // manager.save()
+            // manager.save()
             for category in arrayCategory {
                 addOneCategory(exercise: exercise!, categoryName: category)
             }
@@ -121,6 +131,30 @@ final class HomeViewModel: ObservableObject {
     }
     
     //MARK: - add Data
+    func oneMoreExercise(execise: Exercises){
+        if let index = arrayExercises.firstIndex(of: execise) {
+            arrayExercises.remove(at: index)
+        } else {
+            arrayExercises.append(execise)
+        }
+        
+    }
+    
+    func addTraining(){
+        let training = Training(context: manager.context)
+        training.title = simpleTrainingTitle
+        training.descript = simpleTrainingDescript
+        for exercise in arrayExercises {
+            addOneExecise(training: training, exercise: exercise)
+        }
+        saveTraining()
+    }
+    
+    func addOneExecise(training: Training, exercise: Exercises){
+        exercise.training = training
+        saveExercise()
+    }
+    
     func addExercise(){
         let exercise = Exercises(context: manager.context)
         exercise.titleExercises = simpleExerciseTitle
@@ -153,8 +187,21 @@ final class HomeViewModel: ObservableObject {
         getExercises()
         getcategory()
     }
+    func saveTraining(){
+        trainings.removeAll()
+        manager.save()
+        gettraining()
+    }
     
     //MARK: - Get data
+    func gettraining() {
+        let request = NSFetchRequest<Training>(entityName: "Training")
+        do{
+            trainings = try manager.context.fetch(request)
+        }catch let error{
+            print(error)
+        }
+    }
     func getExercises() {
         let request = NSFetchRequest<Exercises>(entityName: "Exercises")
         do{

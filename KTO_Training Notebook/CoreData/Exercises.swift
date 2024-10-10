@@ -22,6 +22,7 @@ public class Exercises: NSManagedObject {
     @NSManaged public var image: UIImage?
     @NSManaged public var titleExercises: String?
     @NSManaged public var category: NSSet?
+    @NSManaged public var training: Training?
 
 }
 

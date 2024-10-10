@@ -13,7 +13,7 @@ struct ExercisesView: View {
         VStack(alignment: .leading, spacing: 20) {
             //MARK: - Exercises count
             VStack {
-                Text("0")
+                Text("\(vm.exercises.count)")
                     .font(.title)
                 Text("exercises added")
                     .foregroundStyle(.gray)
@@ -74,7 +74,7 @@ struct ExercisesView: View {
                             Text("Add")
                                 .padding(8)
                                 .background(Color.brownApp.cornerRadius(12))
-                        } 
+                        }
                     }
                 }
         }
