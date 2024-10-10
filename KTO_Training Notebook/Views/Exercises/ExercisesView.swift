@@ -27,20 +27,6 @@ struct ExercisesView: View {
             //MARK: - Category
             ScrollView(.horizontal) {
                 HStack {
-                    Button {
-                        vm.simpleCategory = nil
-                        vm.sorting()
-                    } label: {
-                        Text("All")
-                            .foregroundStyle(.white)
-                            .padding(8)
-                            .background {
-                                Color(vm.simpleCategory == nil ? .red : .gray)
-                                    .cornerRadius(12)
-                            }
-                    }
-
-                    
                     ForEach(CategoryExercises.allCases ,id: \.self) { category in
                         Button {
                             vm.simpleCategory = category
@@ -64,8 +50,12 @@ struct ExercisesView: View {
                 EmptryEntryView()
             }else{
                 ScrollView {
-                    ForEach(vm.exercises) { exercise in
-                        ExercisesCellView(exercese: exercise)
+                    ForEach(vm.sortExercises) { exercise in
+                        NavigationLink {
+                            ExerciseView(exercise: exercise, vm: vm)
+                        } label: {
+                            ExercisesCellView(exercese: exercise)
+                        }
                     }
                 }
             }
@@ -73,11 +63,11 @@ struct ExercisesView: View {
             
             Spacer()
             
-            .navigationTitle("Exercises")
+                .navigationTitle("Exercises")
             
             //MARK: - Add button
-            .toolbar {
-                ToolbarItem {
+                .toolbar {
+                    ToolbarItem {
                         NavigationLink {
                             AddExercisesView(vm: vm)
                         } label: {
@@ -85,9 +75,13 @@ struct ExercisesView: View {
                                 .padding(8)
                                 .background(Color.brownApp.cornerRadius(12))
                         } 
+                    }
                 }
-            }
-        }.padding()
+        }
+        .padding()
+        .onAppear {
+            vm.sorting()
+        }
     }
 }
 

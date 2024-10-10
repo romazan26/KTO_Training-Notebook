@@ -12,7 +12,7 @@ struct KTO_Training_NotebookApp: App {
     var body: some Scene {
         WindowGroup {
             LoadingView()
-                .colorScheme(.dark)
+                .preferredColorScheme(.dark)
         }
     }
 }

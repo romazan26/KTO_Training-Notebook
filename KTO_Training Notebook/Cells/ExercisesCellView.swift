@@ -25,6 +25,7 @@ struct ExercisesCellView: View {
                         ForEach(categorys) { category in
                             Text(category.nameCategory ?? "")
                                 .foregroundStyle(.gray)
+                                .minimumScaleFactor(0.5)
                                 .padding(8)
                                 .background {
                                     Color.white.opacity(0.05).cornerRadius(12)

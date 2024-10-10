@@ -53,10 +53,13 @@ struct AddExercisesView: View {
             VStack(alignment: .leading){
                 Text("Category")
                 HStack {
+                
                     Picker("", selection: $vm.simpleCategory){
                         
                         ForEach(CategoryExercises.allCases) { category in
-                            Text(category.rawValue).foregroundStyle(.gray)
+                            if category.rawValue != "all"{
+                                Text(category.rawValue).foregroundStyle(.gray)
+                            }
                         }
                     }
                     .pickerStyle(.menu)
@@ -103,7 +106,12 @@ struct AddExercisesView: View {
             
             //MARK: - Save button
             Button {
-                vm.addExercise()
+                if vm.isEditModel{
+                    vm.editExercise()
+                }else{
+                    vm.addExercise()
+                }
+                
                 dismiss()
             } label: {
                 RedButtonView(text: "Save")

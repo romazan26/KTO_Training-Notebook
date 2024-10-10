@@ -7,7 +7,10 @@
 import Foundation
 
 enum CategoryExercises: String, CaseIterable, Identifiable {
+    
     var id: Self { self }
+    
+    case all = "all"
     case cardio = "cardio"
     case strength = "strength"
     case flexibility = "flexibility"

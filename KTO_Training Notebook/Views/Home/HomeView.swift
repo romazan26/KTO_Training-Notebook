@@ -36,13 +36,33 @@ struct HomeView: View {
                                     .padding(8)
                                     .background(Color.brownApp.cornerRadius(12))
                             }
+                        }else{
+                            NavigationLink {
+                                ExercisesView(vm: vm)
+                            } label: {
+                                Text("See all")
+                                    .foregroundStyle(.red)
+                            }
+
                         }
                        
                     }
-                    Text("You haven't added any entries")
-                        .padding(8)
-                        .frame(maxWidth: .infinity)
-                        .background(Color.brownApp.cornerRadius(12))
+                    if vm.exercises.isEmpty{
+                        Text("You haven't added any entries")
+                            .padding(8)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.brownApp.cornerRadius(12))
+                    }else{
+                        
+                            ScrollView(.horizontal) {
+                                HStack{
+                                ForEach(vm.exercises.prefix(3)) { exercise in
+                                    ExercisesMiniCellView(exercises: exercise)
+                                }
+                            }
+                        }
+                    }
+                    
                 }
                 
                 //MARK: - Training
