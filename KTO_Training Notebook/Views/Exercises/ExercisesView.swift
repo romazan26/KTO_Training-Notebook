@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ExercisesView: View {
+    @StateObject var vm: HomeViewModel
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             //MARK: - Exercises count
@@ -26,22 +27,30 @@ struct ExercisesView: View {
             //MARK: - Category
             ScrollView(.horizontal) {
                 HStack {
-                    Text("All")
-                        .foregroundStyle(.white)
-                        .padding(8)
-                        .background {
-                            Color.red
-                                .cornerRadius(12)
-                        }
+                    Button {
+                        vm.simpleCategory = nil
+                        vm.sorting()
+                    } label: {
+                        Text("All")
+                            .foregroundStyle(.white)
+                            .padding(8)
+                            .background {
+                                Color(vm.simpleCategory == nil ? .red : .gray)
+                                    .cornerRadius(12)
+                            }
+                    }
+
+                    
                     ForEach(CategoryExercises.allCases ,id: \.self) { category in
                         Button {
-                            ///action
+                            vm.simpleCategory = category
+                            vm.sorting()
                         } label: {
                             Text(category.rawValue)
                                 .foregroundStyle(.white)
                                 .padding(8)
                                 .background {
-                                    Color.red
+                                    Color(vm.simpleCategory == category ? .red : .gray)
                                         .cornerRadius(12)
                                 }
                         }
@@ -51,22 +60,31 @@ struct ExercisesView: View {
             }
             
             //MARK: - Exercises
-            EmptryEntryView()
+            if vm.exercises.isEmpty{
+                EmptryEntryView()
+            }else{
+                ScrollView {
+                    ForEach(vm.exercises) { exercise in
+                        ExercisesCellView(exercese: exercise)
+                    }
+                }
+            }
+            
+            
             Spacer()
+            
             .navigationTitle("Exercises")
             
             //MARK: - Add button
             .toolbar {
                 ToolbarItem {
-                    Button {
-                        ///Action
-                    } label: {
-                        Text("Add")
-                            .padding(8)
-                            .background(Color.brownApp.cornerRadius(12))
-                    }
-
-                   
+                        NavigationLink {
+                            AddExercisesView(vm: vm)
+                        } label: {
+                            Text("Add")
+                                .padding(8)
+                                .background(Color.brownApp.cornerRadius(12))
+                        } 
                 }
             }
         }.padding()
@@ -75,6 +93,6 @@ struct ExercisesView: View {
 
 #Preview {
     NavigationView {
-        ExercisesView()
+        ExercisesView(vm: HomeViewModel())
     }
 }

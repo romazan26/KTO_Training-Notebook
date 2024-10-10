@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @StateObject var vm = HomeViewModel()
     var body: some View {
         NavigationView {
             VStack(spacing: 15) {
@@ -27,9 +28,16 @@ struct HomeView: View {
                         Text("Exercises")
                             .font(.system(size: 28, weight: .heavy))
                         Spacer()
-                        Text("Add")
-                            .padding(8)
-                            .background(Color.brownApp.cornerRadius(12))
+                        if vm.exercises.isEmpty{
+                            NavigationLink {
+                                AddExercisesView(vm: vm)
+                            } label: {
+                                Text("Add")
+                                    .padding(8)
+                                    .background(Color.brownApp.cornerRadius(12))
+                            }
+                        }
+                       
                     }
                     Text("You haven't added any entries")
                         .padding(8)

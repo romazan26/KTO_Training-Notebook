@@ -6,11 +6,12 @@
 //
 import Foundation
 
-enum CategoryExercises: String, CaseIterable {
-    case cardio
-    case strength
-    case flexibility
-    case balance
-    case yoga
-    case power
+enum CategoryExercises: String, CaseIterable, Identifiable {
+    var id: Self { self }
+    case cardio = "cardio"
+    case strength = "strength"
+    case flexibility = "flexibility"
+    case balance = "balance"
+    case yoga = "yoga"
+    case power = "power"
 }
