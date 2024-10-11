@@ -22,7 +22,7 @@ public class Exercises: NSManagedObject {
     @NSManaged public var image: UIImage?
     @NSManaged public var titleExercises: String?
     @NSManaged public var category: NSSet?
-    @NSManaged public var training: Training?
+    @NSManaged public var training: NSSet?
 
 }
 
@@ -42,7 +42,22 @@ extension Exercises {
     @NSManaged public func removeFromCategory(_ values: NSSet)
 
 }
+// MARK: Generated accessors for training
+extension Exercises {
 
+    @objc(addTrainingObject:)
+    @NSManaged public func addToTraining(_ value: Training)
+
+    @objc(removeTrainingObject:)
+    @NSManaged public func removeFromTraining(_ value: Training)
+
+    @objc(addTraining:)
+    @NSManaged public func addToTraining(_ values: NSSet)
+
+    @objc(removeTraining:)
+    @NSManaged public func removeFromTraining(_ values: NSSet)
+
+}
 extension Exercises : Identifiable {
 
 }

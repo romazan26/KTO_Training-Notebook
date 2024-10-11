@@ -42,6 +42,7 @@ final class HomeViewModel: ObservableObject {
     @Published var simpleTrainingDescript: String = ""
     @Published var arrayExercises: [Exercises] = []
     @Published var isPresentAddExercises = false
+    @Published var isPresentEditTraining: Bool = false
     
     init(){
         getcategory()
@@ -50,6 +51,32 @@ final class HomeViewModel: ObservableObject {
     }
     
     //MARK: - Edit data
+    
+    func editTraining(){
+        let request = NSFetchRequest<Training>(entityName: "Training")
+        do{
+            trainings = try manager.context.fetch(request)
+            let training = trainings.first(where: {$0.id == simpleTraining?.id})
+            training?.title = simpleTrainingTitle
+            training?.descript = simpleTrainingDescript
+            if let exercises = training?.exercises?.allObjects as? [Exercises]{
+                for exercise in exercises {
+                    exercise.training = nil
+                }
+                for exercise in arrayExercises{
+                    addOneExecise(training: training!, exercise: exercise)
+                }
+            }
+            
+        }catch let error{
+            print(error)
+        }
+        saveTraining()
+        clearTraining()
+        isEditModel = false
+        isPresentEditTraining = false
+    }
+    
     func editExercise(){
         let request = NSFetchRequest<Exercises>(entityName: "Exercises")
         do{
@@ -77,6 +104,18 @@ final class HomeViewModel: ObservableObject {
     }
     
     //MARK: - Fill data
+    func fiilTraining(training: Training){
+        clearTraining()
+        simpleTraining = training
+        simpleTrainingTitle = training.title ?? ""
+        simpleTrainingDescript = training.descript ?? ""
+        if let exercises = training.exercises?.allObjects as? [Exercises]{
+            for exercise in exercises {
+                arrayExercises.append(exercise)
+            }
+        }
+    }
+    
     func fillexercises(exercise: Exercises){
         clear()
         simpleExercise = exercise
@@ -91,6 +130,17 @@ final class HomeViewModel: ObservableObject {
     }
     
     //MARK: - Delete data
+    
+    func deleteTraining(_ training: Training){
+        manager.context.delete(training)
+        if let exercises = training.exercises?.allObjects as? [Exercises]{
+            for exercise in exercises {
+                deleteExercise(exercise)
+            }
+        }
+        saveTraining()
+    }
+    
     func deleteExercise(_ exercise: Exercises){
         if let categorys = exercise.category?.allObjects as? [Category]{
             for category in categorys {
@@ -121,6 +171,12 @@ final class HomeViewModel: ObservableObject {
     }
     
     //MARK: - Clear data
+    func clearTraining(){
+        simpleTrainingTitle = ""
+        simpleTrainingDescript = ""
+        arrayExercises = []
+    }
+    
     func clear(){
         simpleExerciseTitle = ""
         simpleDescriptExercises = ""
@@ -151,7 +207,7 @@ final class HomeViewModel: ObservableObject {
     }
     
     func addOneExecise(training: Training, exercise: Exercises){
-        exercise.training = training
+        training.addToExercises(exercise)
         saveExercise()
     }
     

@@ -17,10 +17,10 @@ struct AddTrainingView: View {
             Text("Add")
                 .font(.title2)
             VStack {
-                //MARK: - Title Exercises
+                //MARK: - Title
                 VStack(alignment: .leading) {
                     Text("Title")
-                    TextField("Text", text: $vm.simpleExerciseTitle)
+                    TextField("Text", text: $vm.simpleTrainingTitle)
                         .padding()
                         .background {Color.white.opacity(0.05).cornerRadius(12)}
                         .focused($keyBoardIfFocused)
@@ -71,9 +71,16 @@ struct AddTrainingView: View {
                 }
             
             Spacer()
+            
+            //MARK: - Save button
             Button {
-                vm.addTraining()
-                dismiss()
+                if vm.isEditModel {
+                    vm.editTraining()
+                }else{
+                    vm.addTraining()
+                    dismiss()
+                }
+                
             } label: {
                 RedButtonView(text: "Save")
             }

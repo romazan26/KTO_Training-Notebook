@@ -13,7 +13,7 @@ struct TrainingsView: View {
         VStack(alignment: .leading, spacing: 20) {
             //MARK: - Training count
             VStack {
-                Text("0")
+                Text("\(vm.trainings.count)")
                     .font(.title)
                 Text("exercises added")
                     .foregroundStyle(.gray)
@@ -29,7 +29,11 @@ struct TrainingsView: View {
             }else{
                 ScrollView {
                     ForEach(vm.trainings) { training in
-                        TrainingCellView(training: training)
+                        NavigationLink {
+                            TrainingView(vm: vm, training: training)
+                        } label: {
+                            TrainingCellView(training: training)
+                        }  
                     }
                 }
             }
@@ -42,7 +46,7 @@ struct TrainingsView: View {
             .toolbar {
                 ToolbarItem {
                     NavigationLink {
-                       ///ADDView
+                        AddTrainingView(vm: vm)
                     } label: {
                         Text("Add")
                             .padding(8)
