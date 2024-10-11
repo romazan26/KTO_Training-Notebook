@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct HistorysView: View {
+    @StateObject var vm: HomeViewModel
     var body: some View {
         VStack(spacing: 20) {
             //MARK: - History count
             VStack {
-                Text("0")
+                Text("\(vm.historys.count)")
                     .font(.title)
                 Text("training sessions were conducted")
                     .foregroundStyle(.gray)
@@ -23,7 +24,20 @@ struct HistorysView: View {
                 Color.brownApp.cornerRadius(12)
             })
             ScrollView {
-                EmptryEntryView()
+                if vm.historys.isEmpty {
+                    EmptryEntryView()
+                }else{
+                    ForEach(vm.historys) { history in
+                        NavigationLink {
+                            HistoryView(history: history, vm: vm)
+                        } label: {
+                            HistoryCellView(history: history)
+                        }
+
+                       
+                    }
+                }
+               
             }
         
         }
@@ -31,7 +45,7 @@ struct HistorysView: View {
             .toolbar {
                 ToolbarItem {
                     NavigationLink {
-                        //AddTrainingView(vm: vm)
+                        AddHistoryView(vm: vm)
                     } label: {
                         Text("Add")
                             .padding(8)
@@ -46,6 +60,6 @@ struct HistorysView: View {
 
 #Preview {
     NavigationView {
-        HistorysView()
+        HistorysView(vm: HomeViewModel())
     }
 }

@@ -44,10 +44,23 @@ final class HomeViewModel: ObservableObject {
     @Published var isPresentAddExercises = false
     @Published var isPresentEditTraining: Bool = false
     
+    //MARK: - History propertyes
+    @Published var historys: [History] = []
+    @Published var simpleHistory: History?
+    @Published var simpleHistoryTitle: String = ""
+    @Published var simpleHistoryDate: Date = Date()
+    @Published var simpleHistoryBegining: String = ""
+    @Published var simpleHistoryEnding: String = ""
+    @Published var isPresentEditHistory: Bool = false
+    @Published var isPresentAddTrainingChoose: Bool = false
+//    @Published var arrayTraining: [Training] = []
+    @Published var simpleTrainingChoose: Training?
+    
     init(){
         getcategory()
         getExercises()
         gettraining()
+        getHistory()
     }
     
     //MARK: - Edit data
@@ -130,6 +143,10 @@ final class HomeViewModel: ObservableObject {
     }
     
     //MARK: - Delete data
+    func deleteHistory(_ history: History){
+        manager.context.delete(history)
+        saveHistory()
+    }
     
     func deleteTraining(_ training: Training){
         manager.context.delete(training)
@@ -166,6 +183,14 @@ final class HomeViewModel: ObservableObject {
     }
     
     //MARK: - Clear data
+    func clearHistory(){
+        simpleHistoryTitle = ""
+        simpleHistoryDate = Date()
+        simpleHistoryBegining = ""
+        simpleHistoryEnding = ""
+        simpleTrainingChoose = nil
+    }
+    
     func clearTraining(){
         simpleTrainingTitle = ""
         simpleTrainingDescript = ""
@@ -182,6 +207,20 @@ final class HomeViewModel: ObservableObject {
     }
     
     //MARK: - add Data
+    
+    func addHistory(){
+        let history = History(context: manager.context)
+        history.title = simpleHistoryTitle
+        history.date = simpleHistoryDate
+        history.beginning = simpleHistoryBegining
+        history.ending = simpleHistoryEnding
+        simpleTrainingChoose?.addToHistory(history)
+        saveTraining()
+        saveHistory()
+        clearHistory()
+    }
+  
+    
     func oneMoreExercise(execise: Exercises){
         if let index = arrayExercises.firstIndex(of: execise) {
             arrayExercises.remove(at: index)
@@ -199,6 +238,7 @@ final class HomeViewModel: ObservableObject {
             addOneExecise(training: training, exercise: exercise)
         }
         saveTraining()
+        clearTraining()
     }
     
     func addOneExecise(training: Training, exercise: Exercises){
@@ -231,6 +271,12 @@ final class HomeViewModel: ObservableObject {
     }
     
     //MARK: - Save data
+    func saveHistory(){
+        historys.removeAll()
+        manager.save()
+        getHistory()
+    }
+    
     func saveExercise(){
         exercises.removeAll()
         categories.removeAll()
@@ -245,6 +291,15 @@ final class HomeViewModel: ObservableObject {
     }
     
     //MARK: - Get data
+    func getHistory() {
+        let request = NSFetchRequest<History>(entityName: "History")
+        do{
+            historys = try manager.context.fetch(request)
+        }catch let error{
+            print(error)
+        }
+    }
+    
     func gettraining() {
         let request = NSFetchRequest<Training>(entityName: "Training")
         do{

@@ -19,7 +19,7 @@ struct HomeView: View {
                 HStack{
                     //MARK: History button
                     NavigationLink {
-                        HistorysView()
+                        HistorysView(vm: vm)
                     } label: {
                         HomeButtonView(imageName: "doc.richtext.fill")
                     }
