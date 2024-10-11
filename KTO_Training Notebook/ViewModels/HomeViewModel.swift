@@ -133,11 +133,6 @@ final class HomeViewModel: ObservableObject {
     
     func deleteTraining(_ training: Training){
         manager.context.delete(training)
-        if let exercises = training.exercises?.allObjects as? [Exercises]{
-            for exercise in exercises {
-                deleteExercise(exercise)
-            }
-        }
         saveTraining()
     }
     

@@ -11,9 +11,17 @@
         <relationship name="category" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Category" inverseName="exercises" inverseEntity="Category"/>
         <relationship name="training" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Training" inverseName="exercises" inverseEntity="Training"/>
     </entity>
+    <entity name="History" representedClassName="History" syncable="YES" codeGenerationType="class">
+        <attribute name="beginning" optional="YES" attributeType="String"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="ending" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="training" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Training" inverseName="history" inverseEntity="Training"/>
+    </entity>
     <entity name="Training" representedClassName="Training" syncable="YES" codeGenerationType="class">
         <attribute name="descript" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercises" inverseName="training" inverseEntity="Exercises"/>
+        <relationship name="history" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="History" inverseName="training" inverseEntity="History"/>
     </entity>
 </model>

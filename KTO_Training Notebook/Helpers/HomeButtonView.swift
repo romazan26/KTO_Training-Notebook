@@ -15,6 +15,7 @@ struct HomeButtonView: View {
             Image(systemName: imageName)
                 .resizable()
                 .frame(width: 24, height: 24)
+                .foregroundStyle(.white)
         }.frame(height: 48)
     }
 }

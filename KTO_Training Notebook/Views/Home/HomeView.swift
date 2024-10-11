@@ -17,7 +17,13 @@ struct HomeView: View {
                 
                 //MARK: - Group of button
                 HStack{
-                    HomeButtonView(imageName: "doc.richtext.fill")
+                    //MARK: History button
+                    NavigationLink {
+                        HistorysView()
+                    } label: {
+                        HomeButtonView(imageName: "doc.richtext.fill")
+                    }
+
                     HomeButtonView(imageName: "clock.fill")
                     HomeButtonView(imageName: "gearshape.fill")
                 }
@@ -91,7 +97,14 @@ struct HomeView: View {
                        
                     }
                     ScrollView {
-                        EmptryEntryView()
+                        if vm.trainings.isEmpty{
+                            EmptryEntryView()
+                        }else{
+                            ForEach(vm.trainings.prefix(2)) { training in
+                                TrainingCellView(training: training)
+                            }
+                        }
+                        Text("Enter see all button")
                     }
                 }
                 Spacer()
