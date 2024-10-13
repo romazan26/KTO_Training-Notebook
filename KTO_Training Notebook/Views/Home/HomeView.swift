@@ -9,12 +9,16 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var vm = HomeViewModel()
+    @StateObject var vmUser = UserViewModel()
     var body: some View {
         NavigationView {
             ZStack {
                 VStack(spacing: 15) {
                     //MARK: - User info
-                    UserInfoView()
+                    UserInfoView(vm: vmUser)
+                        .onTapGesture {
+                            vm.ispresentUser.toggle()
+                        }
                     
                     //MARK: - Group of button
                     HStack{
@@ -38,8 +42,8 @@ struct HomeView: View {
                         } label: {
                             HomeButtonView(imageName: "gearshape.fill")
                         }
-
-                       
+                        
+                        
                     }
                     
                     //MARK: - Exercises
@@ -130,8 +134,15 @@ struct HomeView: View {
                 if vm.isPresentSetting{
                     SettingsView(isPresent: $vm.isPresentSetting)
                 }
+                
+                    
+                //MARK: - Setting View
+                if vm.ispresentUser{
+                    UserSettingsView(isPresented: $vm.ispresentUser, vm: vmUser)
+                }
             }
             .animation(.easeInOut, value: vm.isPresentSetting)
+            .animation(.easeInOut, value: vm.ispresentUser)
         }
     }
 }
