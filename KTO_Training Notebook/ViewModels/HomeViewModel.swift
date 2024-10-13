@@ -12,6 +12,10 @@ import PhotosUI
 final class HomeViewModel: ObservableObject {
     let manager = CoreDataManager.instance
     
+    //MARK: - Home Propertys
+    @Published var isPresentSetting: Bool = false
+    @Published var ispresentUser: Bool = false
+    
     //MARK: - Exercises propertyes
     @Published var exercises: [Exercises] = []
     @Published var simpleExercise: Exercises?

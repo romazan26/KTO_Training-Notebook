@@ -11,113 +11,127 @@ struct HomeView: View {
     @StateObject var vm = HomeViewModel()
     var body: some View {
         NavigationView {
-            VStack(spacing: 15) {
-                //MARK: - User info
-                UserInfoView()
-                
-                //MARK: - Group of button
-                HStack{
-                    //MARK: History button
-                    NavigationLink {
-                        HistorysView(vm: vm)
-                    } label: {
-                        HomeButtonView(imageName: "doc.richtext.fill")
-                    }
+            ZStack {
+                VStack(spacing: 15) {
+                    //MARK: - User info
+                    UserInfoView()
                     
-                    //MARK: - Timer
-                    NavigationLink {
-                        TimerView()
-                    } label: {
-                        HomeButtonView(imageName: "clock.fill")
-                    }
-
-                    
-                    HomeButtonView(imageName: "gearshape.fill")
-                }
-                
-                //MARK: - Exercises
-                VStack{
+                    //MARK: - Group of button
                     HStack{
-                        Text("Exercises")
-                            .font(.system(size: 28, weight: .heavy))
-                        Spacer()
-                        if vm.exercises.isEmpty{
-                            NavigationLink {
-                                AddExercisesView(vm: vm)
-                            } label: {
-                                Text("Add")
-                                    .padding(8)
-                                    .background(Color.brownApp.cornerRadius(12))
-                            }
-                        }else{
-                            NavigationLink {
-                                ExercisesView(vm: vm)
-                            } label: {
-                                Text("See all")
-                                    .foregroundStyle(.red)
-                            }
-
+                        //MARK: History button
+                        NavigationLink {
+                            HistorysView(vm: vm)
+                        } label: {
+                            HomeButtonView(imageName: "doc.richtext.fill")
                         }
+                        
+                        //MARK: - Timer
+                        NavigationLink {
+                            TimerView()
+                        } label: {
+                            HomeButtonView(imageName: "clock.fill")
+                        }
+                        
+                        //MARK: - Setting button
+                        Button {
+                            vm.isPresentSetting.toggle()
+                        } label: {
+                            HomeButtonView(imageName: "gearshape.fill")
+                        }
+
                        
                     }
-                    if vm.exercises.isEmpty{
-                        Text("You haven't added any entries")
-                            .padding(8)
-                            .frame(maxWidth: .infinity)
-                            .background(Color.brownApp.cornerRadius(12))
-                    }else{
-                        
+                    
+                    //MARK: - Exercises
+                    VStack{
+                        HStack{
+                            Text("Exercises")
+                                .font(.system(size: 28, weight: .heavy))
+                            Spacer()
+                            if vm.exercises.isEmpty{
+                                NavigationLink {
+                                    AddExercisesView(vm: vm)
+                                } label: {
+                                    Text("Add")
+                                        .padding(8)
+                                        .background(Color.brownApp.cornerRadius(12))
+                                }
+                            }else{
+                                NavigationLink {
+                                    ExercisesView(vm: vm)
+                                } label: {
+                                    Text("See all")
+                                        .foregroundStyle(.red)
+                                }
+                                
+                            }
+                            
+                        }
+                        if vm.exercises.isEmpty{
+                            Text("You haven't added any entries")
+                                .padding(8)
+                                .frame(maxWidth: .infinity)
+                                .background(Color.brownApp.cornerRadius(12))
+                        }else{
+                            
                             ScrollView(.horizontal) {
                                 HStack{
-                                ForEach(vm.exercises.prefix(3)) { exercise in
-                                    ExercisesMiniCellView(exercises: exercise)
+                                    ForEach(vm.exercises.prefix(3)) { exercise in
+                                        ExercisesMiniCellView(exercises: exercise)
+                                    }
                                 }
                             }
                         }
+                        
                     }
                     
+                    //MARK: - Training
+                    VStack{
+                        HStack{
+                            Text("Training")
+                                .font(.system(size: 28, weight: .heavy))
+                            Spacer()
+                            if vm.trainings.isEmpty{
+                                NavigationLink {
+                                    AddTrainingView(vm: vm)
+                                } label: {
+                                    Text("Add")
+                                        .padding(8)
+                                        .background(Color.brownApp.cornerRadius(12))
+                                }
+                            }else{
+                                NavigationLink {
+                                    TrainingsView(vm: vm)
+                                } label: {
+                                    Text("See all")
+                                        .padding(8)
+                                        .background(Color.brownApp.cornerRadius(12))
+                                }
+                            }
+                            
+                        }
+                        ScrollView {
+                            if vm.trainings.isEmpty{
+                                EmptryEntryView()
+                            }else{
+                                ForEach(vm.trainings.prefix(2)) { training in
+                                    TrainingCellView(training: training)
+                                }
+                            }
+                            Text("Enter see all button")
+                        }
+                    }
+                    Spacer()
                 }
+                .padding()
+                .navigationTitle("Home")
                 
-                //MARK: - Training
-                VStack{
-                    HStack{
-                        Text("Training")
-                            .font(.system(size: 28, weight: .heavy))
-                        Spacer()
-                        if vm.trainings.isEmpty{
-                            NavigationLink {
-                                AddTrainingView(vm: vm)
-                            } label: {
-                                Text("Add")
-                                    .padding(8)
-                                    .background(Color.brownApp.cornerRadius(12))
-                            }
-                        }else{
-                            NavigationLink {
-                                TrainingsView(vm: vm)
-                            } label: {
-                                Text("See all")
-                                    .padding(8)
-                                    .background(Color.brownApp.cornerRadius(12))
-                            }
-                        }
-                       
-                    }
-                    ScrollView {
-                        if vm.trainings.isEmpty{
-                            EmptryEntryView()
-                        }else{
-                            ForEach(vm.trainings.prefix(2)) { training in
-                                TrainingCellView(training: training)
-                            }
-                        }
-                        Text("Enter see all button")
-                    }
+                //MARK: - Setting View
+                if vm.isPresentSetting{
+                    SettingsView(isPresent: $vm.isPresentSetting)
                 }
-                Spacer()
             }
-            .padding()
-            .navigationTitle("Home")
+            .animation(.easeInOut, value: vm.isPresentSetting)
         }
     }
 }
