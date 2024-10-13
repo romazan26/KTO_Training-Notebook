@@ -18,6 +18,13 @@
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="training" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Training" inverseName="history" inverseEntity="Training"/>
     </entity>
+    <entity name="TimerEntity" representedClassName="TimerEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="hours" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="isRuning" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="minutes" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="seconds" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
     <entity name="Training" representedClassName="Training" syncable="YES" codeGenerationType="class">
         <attribute name="descript" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>

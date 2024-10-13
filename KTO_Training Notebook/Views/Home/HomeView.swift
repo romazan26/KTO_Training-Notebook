@@ -23,8 +23,15 @@ struct HomeView: View {
                     } label: {
                         HomeButtonView(imageName: "doc.richtext.fill")
                     }
+                    
+                    //MARK: - Timer
+                    NavigationLink {
+                        TimerView()
+                    } label: {
+                        HomeButtonView(imageName: "clock.fill")
+                    }
 
-                    HomeButtonView(imageName: "clock.fill")
+                    
                     HomeButtonView(imageName: "gearshape.fill")
                 }
                 
